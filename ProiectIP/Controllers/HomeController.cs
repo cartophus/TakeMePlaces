@@ -26,5 +26,40 @@ namespace ProiectIP.Controllers
 
             return View();
         }
+
+        public ActionResult Restaurants()
+        {
+            return View();
+        }
+
+        public ActionResult Museums()
+        {
+            return View();
+        }
+
+        public ActionResult Cafes()
+        {
+            return View();
+        }
+
+        public ActionResult MovieTheaters()
+        {
+            return View();
+        }
+
+        public ActionResult ShoppingMalls()
+        {
+            return View();
+        }
+
+        public ActionResult Bars()
+        {
+            return View();
+        }
+
+        public ActionResult Parks()
+        {
+            return View();
+        }
     }
 }

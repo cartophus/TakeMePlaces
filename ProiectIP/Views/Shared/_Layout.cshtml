@@ -20,6 +20,9 @@
     <link href='//fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>
     <!--static chart-->
     <script src="~/Content/js/Chart.min.js"></script>
+    <!-- google maps scripts -->
+    <script type="text/javascript" src="~/Content/myJavascript/googleMapsJS.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBivmkEYpHbv7hH9hnb1u-LBd-7g7rO-I4&libraries=places"></script>
 </head>
 <body>
     @*CONTENT*@
@@ -29,13 +32,12 @@
 
     <!--slider menu-->
     <div class="sidebar-menu">
-        
+
         <div class="menu">
             <ul id="menu">
                 <li id="menu-home"><a href="/Home/Index"><i class="fa fa-map-marker"></i><span>Home</span></a></li>
                 @*account area*@
                 <li>
-
                     <a href="#"><i class="fa fa-cogs"></i><span>Account</span><span class="fa fa-angle-right" style="float: right"></span></a>
                     @if (Request.IsAuthenticated)
                     {
@@ -43,7 +45,7 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            <ul class="nav navbar-nav navbar-right">
+                            <ul>
                                 <li>
                                     @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                                 </li>
@@ -53,19 +55,32 @@
                     }
                     else
                     {
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul>
                             <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         </ul>
                     }
                 </li>
+                <li id="menu-home">
+                    <a href="#"><i class="fa fa-book nav_icon"></i><span>Display Category</span><span class="fa fa-angle-right" style="float: right"></span></a>
+                    <ul>
+                        <li><a href="/Home/Restaurants">Restaurants</a></li>
+                        <li><a href="/Home/Museums">Museums</a></li>
+                        <li><a href="/Home/Cafes">Cafes</a></li>
+                        <li><a href="/Home/MovieTheaters">Movie Theaters</a></li>
+                        <li><a href="/Home/Bars">Bars</a></li>
+                        <li><a href="/Home/ShoppingMalls">Shopping Malls</a></li>
+                        <li><a href="/Home/Parks">Parks</a></li>
+                    </ul>
+                </li>
+
                 @*end account area*@
                 <li id="menu-home"><a href="index.html"><i class="fa fa-tachometer"></i><span>Show recommendations</span></a></li>
             </ul>
         </div>
     </div>
     <div class="clearfix"> </div>
-    
+
     <!--scrolling js-->
     <script src="~/Content/js/jquery.nicescroll.js"></script>
     <script src="~/Content/js/scripts.js"></script>

@@ -1,74 +1,178 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-
-@section content{
+﻿@section content{
     <div id="map" style="height:725px;"></div>
-    <script>
-        var map;
 
-        function initMap() {
-            // Create the map.
-            var pyrmont = { lat: -33.866, lng: 151.196 };
+    <script>
+
+        var map;
+        var infoWindow;
+        var userPos;
+        var request;
+
+        function initialize() {
+
+            var bucharest = new google.maps.LatLng(44.4268, 26.1025);
+
             map = new google.maps.Map(document.getElementById('map'), {
-                center: pyrmont,
-                zoom: 17
+                center: bucharest,
+                zoom: 14,
+                styles: [
+                    { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+                    { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+                    { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+                    {
+                        featureType: 'administrative.locality',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#d59563' }]
+                    },
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#d59563' }]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#263c3f' }]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#6b9a76' }]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#38414e' }]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry.stroke',
+                        stylers: [{ color: '#212a37' }]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#9ca5b3' }]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#746855' }]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry.stroke',
+                        stylers: [{ color: '#1f2835' }]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#f3d19c' }]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#2f3948' }]
+                    },
+                    {
+                        featureType: 'transit.station',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#d59563' }]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#17263c' }]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.fill',
+                        stylers: [{ color: '#515c6d' }]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.stroke',
+                        stylers: [{ color: '#17263c' }]
+                    }
+                ]
             });
 
-            // Create the places service.
-            var service = new google.maps.places.PlacesService(map);
-            var getNextPage = null;
-            var moreButton = document.getElementById('more');
-            moreButton.onclick = function () {
-                moreButton.disabled = true;
-                if (getNextPage) getNextPage();
-            };
+            //center to user's location - else remains on default center
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    userPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-            // Perform a nearby search.
-            service.nearbySearch(
-                { location: pyrmont, radius: 500, type: ['store'] },
-                function (results, status, pagination) {
-                    if (status !== 'OK') return;
+                    var marker = new google.maps.Marker({
+                        position: userPos,
+                        icon: {
+                            path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                            fillColor: 'yellow',
+                            fillOpacity: 0.8,
+                            scale: 0.1,
+                            strokeColor: 'gold',
+                            strokeWeight: 1
+                        },
+                        map: map
+                    });
 
-                    createMarkers(results);
-                    moreButton.disabled = !pagination.hasNextPage;
-                    getNextPage = pagination.hasNextPage && function () {
-                        pagination.nextPage();
-                    };
-                });
-        }
+                    infoWindow = new google.maps.InfoWindow();
 
-        function createMarkers(places) {
-            var bounds = new google.maps.LatLngBounds();
-            var placesList = document.getElementById('places');
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infoWindow.setContent('You are here');
+                        infoWindow.open(map, this);
+                    });
+                    //request = {
+                    //    location: userPos,
+                    //    radius: '2000',
+                    //    type: ['restaurant']
+                    //}
 
-            for (var i = 0, place; place = places[i]; i++) {
-                var image = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
+                    //infoWindow = new google.maps.InfoWindow();
 
-                var marker = new google.maps.Marker({
-                    map: map,
-                    icon: image,
-                    title: place.name,
-                    position: place.geometry.location
+                    //var service = new google.maps.places.PlacesService(map);
+
+                    //service.nearbySearch(request, callback);
+
+                    map.setCenter(userPos);
                 });
 
-                var li = document.createElement('li');
-                li.textContent = place.name;
-                placesList.appendChild(li);
+                //} else {
 
-                bounds.extend(place.geometry.location);
+                //    request = {
+                //        location: bucharest,
+                //        radius: '2000',
+                //        type: ['restaurant']
+                //    }
+
+                //infoWindow = new google.maps.InfoWindow();
+
+                //var service = new google.maps.places.PlacesService(map);
+
+                //service.nearbySearch(request, callback);
             }
-            map.fitBounds(bounds);
         }
-    </script>
 
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBivmkEYpHbv7hH9hnb1u-LBd-7g7rO-I4&callback=initMap" async defer></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBivmkEYpHbv7hH9hnb1u-LBd-7g7rO-I4&libraries=places"></script>
+        //function callback(results, status) {
+        //    //if (status == google.maps.places.PlacesService.OK) {
+        //    for (var i = 0; i < results.length; i++) {
+        //        createMarker(results[i]);
+        //    }
+        //    //}
+        //}
+
+        //function createMarker(place) {
+        //    var marker = new google.maps.Marker({
+        //        position: place.geometry.location,
+        //        map: map,
+        //        animation: google.maps.Animation.DROP
+        //    });
+
+        //    google.maps.event.addListener(marker, 'click', function () {
+        //        infoWindow.setContent(place.name);
+        //        infoWindow.open(map, this);
+        //    });
+        //}
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 }

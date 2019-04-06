@@ -272,6 +272,7 @@
     <Content Include="Content\js\skycons.js" />
     <Content Include="Content\login.html" />
     <Content Include="Content\maps.html" />
+    <Content Include="Content\myJavascript\googleMapsJS.js" />
     <Content Include="Content\portlet.html" />
     <Content Include="Content\price.html" />
     <Content Include="Content\product.html" />
@@ -340,6 +341,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Restaurants.cshtml" />
+    <Content Include="Views\Home\Museums.cshtml" />
+    <Content Include="Views\Home\Cafes.cshtml" />
+    <Content Include="Views\Home\MovieTheaters.cshtml" />
+    <Content Include="Views\Home\ShoppingMalls.cshtml" />
+    <Content Include="Views\Home\Bars.cshtml" />
+    <Content Include="Views\Home\Parks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
