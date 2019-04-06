@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,43 +29,43 @@
 
     <!--slider menu-->
     <div class="sidebar-menu">
-        <div class="logo">
-            <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="#">
-                <span id="logo"></span>
-                <!--<img id="logo" src="" alt="Logo"/>-->
-            </a>
-        </div>
+        
         <div class="menu">
             <ul id="menu">
-                <li id="menu-home"><a href="index.html"><i class="fa fa-tachometer"></i><span>Account</span></a></li>
+                <li id="menu-home"><a href="/Home/Index"><i class="fa fa-map-marker"></i><span>Home</span></a></li>
+                @*account area*@
                 <li>
-                    <a href="#"><i class="fa fa-cogs"></i><span>Components</span><span class="fa fa-angle-right" style="float: right"></span></a>
-                    <ul>
-                        <li><a href="grids.html">Grids</a></li>
-                        <li><a href="portlet.html">Portlets</a></li>
-                    </ul>
+
+                    <a href="#"><i class="fa fa-cogs"></i><span>Account</span><span class="fa fa-angle-right" style="float: right"></span></a>
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                </li>
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        </ul>
+                    }
                 </li>
+                @*end account area*@
+                <li id="menu-home"><a href="index.html"><i class="fa fa-tachometer"></i><span>Show recommendations</span></a></li>
             </ul>
         </div>
     </div>
     <div class="clearfix"> </div>
-    <script>
-        var toggle = true;
-
-        $(".sidebar-icon").click(function () {
-            if (toggle) {
-                $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
-                $("#menu span").css({ "position": "absolute" });
-            }
-            else {
-                $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
-                setTimeout(function () {
-                    $("#menu span").css({ "position": "relative" });
-                }, 400);
-            }
-            toggle = !toggle;
-        });
-    </script>
+    
     <!--scrolling js-->
     <script src="~/Content/js/jquery.nicescroll.js"></script>
     <script src="~/Content/js/scripts.js"></script>
