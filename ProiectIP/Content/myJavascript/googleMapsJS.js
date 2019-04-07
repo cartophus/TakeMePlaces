@@ -2,6 +2,8 @@
 var userPos;
 var infoWindow;
 var request;
+var service;
+var markers = [];
 
 function display(category) {
 
@@ -126,7 +128,7 @@ function display(category) {
 
             infoWindow = new google.maps.InfoWindow();
 
-            var service = new google.maps.places.PlacesService(map);
+            service = new google.maps.places.PlacesService(map);
 
             service.nearbySearch(request, callback);
 
@@ -143,21 +145,40 @@ function display(category) {
 
         infoWindow = new google.maps.InfoWindow();
 
-        var service = new google.maps.places.PlacesService(map);
+        service = new google.maps.places.PlacesService(map);
 
         service.nearbySearch(request, callback);
     }
+
+    google.maps.event.addListener(map, 'rightclick', function (event) {
+
+        map.setCenter(event.latLng);
+
+        clearResults(markers);
+
+        service = new google.maps.places.PlacesService(map);
+
+        request = {
+            location: event.latLng,
+            radius: '2000',
+            type: [category]
+        }
+
+        service.nearbySearch(request, callback);
+    })
 }
 
+///STORE PLACE ID FOR AI ----------------------------------- TO DO
 function callback(results, status) {
     //if (status == google.maps.places.PlacesService.OK) {
     for (var i = 0; i < results.length; i++) {
-        createMarker(results[i]);
+        markers.push(createMarker(results[i]));
     }
     //}
 }
 
 function createMarker(place) {
+    
     var marker = new google.maps.Marker({
         position: place.geometry.location,
         map: map,
@@ -165,7 +186,24 @@ function createMarker(place) {
     });
 
     google.maps.event.addListener(marker, 'click', function () {
-        infoWindow.setContent(place.name);
+        var photos = place.photos;
+        var url;
+        if (photos) url = photos[0].getUrl({ minWidth: 200, minHeight: 200, maxWidth:250, maxHeight: 250 });
+        infoWindow.setContent(
+            '<div>' + 
+            '<img style="display: block;margin - left: auto;margin - right: auto;" src="' + url + '"></img>' +
+            '<br /><h3><strong>' + place.name + '</strong></h3><br />' +
+            '<p>Rating: ' + place.rating + '</p>' + 
+            '</div>'
+        );
         infoWindow.open(map, this);
     });
+    return marker;
+}
+
+function clearResults(markers) {
+    for (var m in markers) {
+        markers[m].setMap(null);
+    }
+    markers = [];
 }
