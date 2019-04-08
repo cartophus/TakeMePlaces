@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,17 +14,38 @@ namespace ProiectIP.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult ShowRecommendations()
         {
-            ViewBag.Message = "Your application description page.";
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"C:\Users\vladi\Anaconda3\python.exe";
 
-            return View();
-        }
+            // 2) Provide script and arguments
+            var script = @"C:\Users\vladi\Desktop\work\An3\TakeMePlaces\TakeMePlaces\ProiectIP\AI\ScriptPython2.py";
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            psi.Arguments = $"\"{script}\"";
 
+            // 3) Process configuration
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+
+            // 4) Execute process and get output
+            var errors = "";
+            var results = "";
+
+            using (var process = Process.Start(psi))
+            {
+                errors = process.StandardError.ReadToEnd();
+                results = process.StandardOutput.ReadToEnd();
+            }
+
+            // 5) Display output
+            Console.WriteLine("ERRORS:");
+            Console.WriteLine(errors);
+            Console.WriteLine();
+            Console.WriteLine("Results:");
+            Console.WriteLine(results);
             return View();
         }
 

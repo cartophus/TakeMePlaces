@@ -14,8 +14,16 @@ namespace ProiectIP.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            userIdentity.AddClaim(new Claim("Age", this.Age.ToString()));
+            userIdentity.AddClaim(new Claim("Sex", this.Sex.ToString()));
+            userIdentity.AddClaim(new Claim("Occupation", this.Occupation.ToString()));
+            userIdentity.AddClaim(new Claim("Zipcode", this.Zipcode.ToString()));
             return userIdentity;
         }
+        public int Age { get; set; }
+        public string Sex { get; set; }
+        public string Occupation { get; set; }
+        public int Zipcode { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

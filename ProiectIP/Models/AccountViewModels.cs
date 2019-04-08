@@ -79,6 +79,18 @@ namespace ProiectIP.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name ="Age")]
+        public int Age { get; set; }
+
+        [Display(Name = "Sex")]
+        public string Sex { get; set; }
+
+        [Display(Name = "Occupation")]
+        public string Occupation { get; set; }
+
+        [Display(Name = "Zipcode")]
+        public int Zipcode { get; set; }
     }
 
     public class ResetPasswordViewModel

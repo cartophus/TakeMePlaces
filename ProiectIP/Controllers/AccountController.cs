@@ -151,7 +151,16 @@ namespace ProiectIP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Age = model.Age,
+                    Sex = model.Sex,
+                    Occupation = model.Occupation,
+                    Zipcode = model.Zipcode
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

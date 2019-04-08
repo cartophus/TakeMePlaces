@@ -41,17 +41,16 @@
                     <a href="#"><i class="fa fa-cogs"></i><span>Account</span><span class="fa fa-angle-right" style="float: right"></span></a>
                     @if (Request.IsAuthenticated)
                     {
-                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
+                        <ul>
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
 
-                            <ul>
-                                <li>
-                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                                </li>
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                            </ul>
-                        }
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                }
+                            </li>
+                        </ul>
                     }
                     else
                     {
@@ -75,7 +74,7 @@
                 </li>
 
                 @*end account area*@
-                <li id="menu-home"><a href="index.html"><i class="fa fa-tachometer"></i><span>Show recommendations</span></a></li>
+                <li id="menu-home"><a href="/Home/ShowRecommendations"><i class="fa fa-tachometer"></i><span>Show recommendations</span></a></li>
             </ul>
         </div>
     </div>
