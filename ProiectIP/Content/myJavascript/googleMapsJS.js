@@ -4,10 +4,12 @@ var infoWindow;
 var request;
 var service;
 var markers = [];
+var category1;
 
 function display(category) {
 
     var bucharest = new google.maps.LatLng(44.4268, 26.1025);
+    category1 = category;
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: bucharest,
@@ -123,7 +125,7 @@ function display(category) {
             request = {
                 location: userPos,
                 radius: '2000',
-                type: [category]
+                type: [category] 
             }
 
             infoWindow = new google.maps.InfoWindow();
@@ -193,7 +195,20 @@ function createMarker(place) {
             '<div>' + 
             '<img style="display: block;margin - left: auto;margin - right: auto;" src="' + url + '"></img>' +
             '<br /><h3><strong>' + place.name + '</strong></h3><br />' +
-            '<p>Rating: ' + place.rating + '</p>' + 
+            '<p>Google Rating: ' + place.rating + '</p><br />' + 
+            '<br /><p> Your Rating:</p>' +
+            '<form method="post" action="/Home/Rate/' + category1 + '/' + place.place_id + '">' + 
+            '<fieldset>' + 
+            '<span class="star-cb-group">' + 
+                '<input type="submit" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>' + 
+                '<input type="submit" id="rating-4" name="rating" value="4" checked="checked" /><label for="rating-4">4</label>' + 
+                '<input type="submit" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>' + 
+                '<input type="submit" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>' + 
+                '<input type="submit" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>' + 
+                '<input type="submit" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>' + 
+            '</span>' + 
+            '</fieldset >' +
+            '</form >' + 
             '</div>'
         );
         infoWindow.open(map, this);
