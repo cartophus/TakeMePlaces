@@ -175,11 +175,13 @@ namespace ProiectIP.Controllers
                 string[] userRec = results.Split(new char[2] { ']', '[' });
 
                 string[] userRecPerPlace = userRec[userPos].Split(new char[2] { '\n', ' ' });
+                
                 double[] recPerPlace = new double[placeSize];
                 int i = 0;
                 foreach (string rec in userRecPerPlace)
                 {
-                    recPerPlace[i] = double.Parse(rec);
+                    Debug.WriteLine(rec);
+                    recPerPlace[i] = double.Parse(rec.Trim());
                     i++;
                 }
 
