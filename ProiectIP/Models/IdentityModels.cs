@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -24,6 +25,8 @@ namespace ProiectIP.Models
         public string Sex { get; set; }
         public string Occupation { get; set; }
         public int Zipcode { get; set; }
+
+        public virtual ICollection<RatingModel> RatingModels { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

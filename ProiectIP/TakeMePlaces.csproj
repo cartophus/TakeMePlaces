@@ -205,8 +205,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AI\conka.txt" />
     <Content Include="AI\ScriptPython2.py" />
     <Content Include="AI\u.user" />
+    <Content Include="AI\user.user" />
     <Content Include="Content\404.html" />
     <Content Include="Content\blank.html" />
     <Content Include="Content\bootstrap.css" />
@@ -304,6 +306,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="AI\u.data" />
+    <Content Include="AI\user.data" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

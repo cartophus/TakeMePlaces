@@ -1,0 +1,76 @@
+﻿Errors:
+Traceback (most recent call last):
+  File "C:\Users\vladi\Desktop\work\An3\TakeMePlaces\TakeMePlaces\ProiectIP\AI\ScriptPython2.py", line 77, in <module>
+    users = pd.read_csv('u.user', sep='|', names=u_cols,encoding='latin-1')
+  File "C:\Users\vladi\Anaconda3\lib\site-packages\pandas\io\parsers.py", line 678, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\vladi\Anaconda3\lib\site-packages\pandas\io\parsers.py", line 440, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Users\vladi\Anaconda3\lib\site-packages\pandas\io\parsers.py", line 787, in __init__
+    self._make_engine(self.engine)
+  File "C:\Users\vladi\Anaconda3\lib\site-packages\pandas\io\parsers.py", line 1014, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "C:\Users\vladi\Anaconda3\lib\site-packages\pandas\io\parsers.py", line 1708, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas\_libs\parsers.pyx", line 384, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas\_libs\parsers.pyx", line 695, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: File b'u.user' does not exist
+
+
+Results:
+
+Errors:
+
+
+Results:
+Iteration: 100 ; error = 337.5703
+
+P x Q:
+[[3.66832338 3.50831718 3.4977549  ... 3.55781734 3.53665916 3.53065273]
+ [3.66215109 3.48792359 3.48322558 ... 3.5584675  3.5250015  3.53526108]
+ [3.6256567  3.45286351 3.44641628 ... 3.49775364 3.50428733 3.50212519]
+ ...
+ [3.67392532 3.49044307 3.48775871 ... 3.52808984 3.53094143 3.53454459]
+ [3.73147992 3.53608334 3.53806753 ... 3.56907809 3.58071629 3.56917894]
+ [3.65440092 3.46604747 3.47562698 ... 3.49673218 3.5150103  3.50275508]]
+
+
+Errors:
+
+
+Results:
+Iteration: 100 ; error = 2.1968
+
+P x Q:
+[[3.16184424 3.17506842 3.16093939 3.16892159 3.17052285 3.16798988]
+ [3.16938487 3.16691963 3.1653222  3.17354091 3.17537911 3.17682768]]
+
+
+Errors:
+
+
+Results:
+[[3.67474478 3.49856137 3.5137165  ... 3.5361359  3.51191185 3.56450427]
+ [3.6981548  3.50072158 3.50276807 ... 3.52196488 3.54833803 3.53252681]
+ [3.60720706 3.45263352 3.44906698 ... 3.49148618 3.47350583 3.47697775]
+ ...
+ [3.67553361 3.50649022 3.50879664 ... 3.51660186 3.52521371 3.54552153]
+ [3.69481704 3.55933157 3.55396965 ... 3.60613632 3.58827007 3.60178546]
+ [3.62578318 3.45528231 3.47410447 ... 3.50350726 3.4934222  3.5167188 ]]
+
+Errors:
+
+
+Results:
+[[3.14834438 3.16040777 3.1642048  3.18178723 3.19063335 3.15517839]
+ [3.17039614 3.15956771 3.16520622 3.14481615 3.17781897 3.16337626]]
+
+
+
+3.14834438 3.16040777 3.1642048  3.18178723 3.19063335 3.15517839
+
+ 
+3.17039614 3.15956771 3.16520622 3.14481615 3.17781897 3.16337626
+
+
+

@@ -39,8 +39,8 @@ class MF():
         self.sgd()
         mse = self.mse()
         training_process.append((i, mse))
-        if (i+1) % 20 == 0:
-            print("Iteration: %d ; error = %.4f" % (i+1, mse))
+        #if (i+1) % 20 == 0:
+            #print("Iteration: %d ; error = %.4f" % (i+1, mse))
 
         return training_process
 
@@ -74,13 +74,12 @@ class MF():
     def full_matrix(self):
         return mf.b + mf.b_u[:,np.newaxis] + mf.b_i[np.newaxis:,] + mf.P.dot(mf.Q.T)
 u_cols = ['user_id', 'age', 'sex', 'occupation', 'zip_code']
-users = pd.read_csv('u.user', sep='|', names=u_cols,encoding='latin-1')
+users = pd.read_csv('C:\\Users\\vladi\\Desktop\\work\\An3\\TakeMePlaces\\TakeMePlaces\\ProiectIP\\AI\\user.user', sep='|', names=u_cols,encoding='latin-1')
 r_cols = ['user_id', 'place_id', 'rating', 'unix_timestamp']
-ratings = pd.read_csv('u.data', sep='\t', names=r_cols,encoding='latin-1')
+ratings = pd.read_csv('C:\\Users\\vladi\\Desktop\\work\\An3\\TakeMePlaces\\TakeMePlaces\\ProiectIP\\AI\\user.data', sep='\t', names=r_cols,encoding='latin-1')
 R= np.array(ratings.pivot(index = 'user_id', columns ='place_id', values = 'rating').fillna(0))
 mf = MF(R, K=20, alpha=0.001, beta=0.01, iterations=100)
 training_process = mf.train()
-print()
-print("P x Q:")
-print(mf.full_matrix())
-print()
+
+output = mf.full_matrix()
+print(output)

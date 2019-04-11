@@ -1,4 +1,7 @@
-﻿@section content{
+﻿@{ 
+    
+}
+@section content{
     <div id="map" style="height:725px;"></div>
 
     <script>
@@ -121,57 +124,11 @@
                         infoWindow.setContent('You are here');
                         infoWindow.open(map, this);
                     });
-                    //request = {
-                    //    location: userPos,
-                    //    radius: '2000',
-                    //    type: ['restaurant']
-                    //}
-
-                    //infoWindow = new google.maps.InfoWindow();
-
-                    //var service = new google.maps.places.PlacesService(map);
-
-                    //service.nearbySearch(request, callback);
 
                     map.setCenter(userPos);
                 });
-
-                //} else {
-
-                //    request = {
-                //        location: bucharest,
-                //        radius: '2000',
-                //        type: ['restaurant']
-                //    }
-
-                //infoWindow = new google.maps.InfoWindow();
-
-                //var service = new google.maps.places.PlacesService(map);
-
-                //service.nearbySearch(request, callback);
             }
         }
-
-        //function callback(results, status) {
-        //    //if (status == google.maps.places.PlacesService.OK) {
-        //    for (var i = 0; i < results.length; i++) {
-        //        createMarker(results[i]);
-        //    }
-        //    //}
-        //}
-
-        //function createMarker(place) {
-        //    var marker = new google.maps.Marker({
-        //        position: place.geometry.location,
-        //        map: map,
-        //        animation: google.maps.Animation.DROP
-        //    });
-
-        //    google.maps.event.addListener(marker, 'click', function () {
-        //        infoWindow.setContent(place.name);
-        //        infoWindow.open(map, this);
-        //    });
-        //}
 
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>

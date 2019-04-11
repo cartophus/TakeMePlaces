@@ -11,5 +11,6 @@ namespace ProiectIP.Models
         [Key]
         public String PlaceId { get; set; }
 
+        public virtual ICollection<RatingModel> RatingModels { get; set; }
     }
 }

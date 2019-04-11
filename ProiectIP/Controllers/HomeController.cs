@@ -9,19 +9,45 @@ using Microsoft.AspNet.Identity;
 
 namespace ProiectIP.Controllers
 {
-    
+
+    public struct PlaceSortObj
+    {
+        public int placePoz;
+        public double placeRating;
+        public Place place;
+
+        public PlaceSortObj(int p1, double p2, Place p3)
+        {
+            placePoz = p1;
+            placeRating = p2;
+            place = p3;
+        }
+    }
+
+
+
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public static int Comparison(PlaceSortObj POS1, PlaceSortObj POS2)
+        {
+            if (POS1.placeRating > POS2.placeRating) return -1;
+            else if (POS1.placeRating < POS2.placeRating) return 1;
+            return 0;
+        }
+
         public ActionResult Index()
         {
+
+
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
-        public ActionResult Rate(String category,String id)
+
+        public ActionResult Rate(String category, String id)
         {
+
             int rating;
             if (!string.IsNullOrEmpty(Request.Form["rating"]))
             {
@@ -29,13 +55,14 @@ namespace ProiectIP.Controllers
 
                 String userId = User.Identity.GetUserId();
 
+
                 //add location to our database
                 Place place = new Place();
                 place.PlaceId = id;
                 Place check = db.Places.Find(id);
-                if(!db.Places.Any(o => o.PlaceId == id)) db.Places.Add(place);
+                if (!db.Places.Any(o => o.PlaceId == id)) db.Places.Add(place);
 
-                
+
                 //add new rating to our database
                 if (!db.RatingModels.Any(o => o.PlaceId == id && o.UserId == userId))
                 {
@@ -45,47 +72,71 @@ namespace ProiectIP.Controllers
                     ratingModel.UserId = userId;
                     ratingModel.UnixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                     db.RatingModels.Add(ratingModel);
+
+                    string text = ratingModel.UserId + "\t" + ratingModel.PlaceId + "\t" + ratingModel.Rating + "\t" + ratingModel.UnixTimestamp;
+                    using (System.IO.StreamWriter file =
+                            new System.IO.StreamWriter(@"C:\Users\vladi\Desktop\work\An3\TakeMePlaces\TakeMePlaces\ProiectIP\AI\user.data", true))
+                    {
+                        file.WriteLine(text);
+                    }
                 }
-                else
-                {
-                    RatingModel rm = db.RatingModels.Where(o => o.PlaceId == id && o.UserId == userId).FirstOrDefault();
-                    rm.Rating = rating;
-                }
+
                 db.SaveChanges();
 
-                
+
             }
             switch (category)
             {
                 case "restaurant":
                     return RedirectToAction("Restaurants");
-                    
+
                 case "bar":
                     return RedirectToAction("Bars");
-                    
+
                 case "museum":
                     return RedirectToAction("Museums");
-                    
+
                 case "shopping_mall":
                     return RedirectToAction("ShoppingMalls");
-                   
+
                 case "movie_theater":
                     return RedirectToAction("MovieTheaters");
-                   
+
                 case "park":
                     return RedirectToAction("Parks");
-                  
+
                 case "cafe":
                     return RedirectToAction("Cafes");
-                   
+
                 default:
                     return RedirectToAction("Index");
             }
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult ShowRecommendations()
         {
+            String userId = User.Identity.GetUserId();
+
+            var users = from user in db.Users select user;
+
+            int userPos = 0;
+            foreach (ApplicationUser user in users)
+            {
+                if (user.Id == userId) break;
+                userPos++;
+            }
+
+            var places1 = from place in db.Places select place;
+            var placeSize = places1.Count();
+            var places = places1.ToList();
+            int[] placePoz = new int[placeSize];
+            for(int j = 0;j<placeSize;j++)
+            {
+                placePoz[j] = j;
+            }
+
+
             var psi = new ProcessStartInfo();
             psi.FileName = @"C:\Users\vladi\Anaconda3\python.exe";
 
@@ -111,51 +162,85 @@ namespace ProiectIP.Controllers
             }
 
             // 5) Display output
-            Console.WriteLine("ERRORS:");
-            Console.WriteLine(errors);
-            Console.WriteLine();
-            Console.WriteLine("Results:");
-            Console.WriteLine(results);
+
+            using (System.IO.StreamWriter file =
+                            new System.IO.StreamWriter(@"C:\Users\vladi\Desktop\work\An3\TakeMePlaces\TakeMePlaces\ProiectIP\AI\conka.txt", true))
+            {
+                //file.WriteLine("Errors:");
+                //file.WriteLine(errors);
+                //file.WriteLine();
+                //file.WriteLine("Results:");
+                //file.WriteLine(results);
+
+                string[] userRec = results.Split(new char[2] { ']', '[' });
+
+                string[] userRecPerPlace = userRec[userPos].Split(new char[2] { '\n', ' ' });
+                double[] recPerPlace = new double[placeSize];
+                int i = 0;
+                foreach (string rec in userRecPerPlace)
+                {
+                    recPerPlace[i] = double.Parse(rec);
+                    i++;
+                }
+
+                PlaceSortObj[] PSO = new PlaceSortObj[placeSize];
+                for(int k = 0; k < placeSize ;k++)
+                {
+                    PSO[k] = new PlaceSortObj(placePoz[k], recPerPlace[k], places[k]);
+                }
+
+                Array.Sort(PSO.ToArray(), Comparison);
+
+                List<Place> placesView = new List<Place>();
+                for(int t = 0; t < 5;t++)
+                {
+                    placesView.Add(PSO[t].place);
+                }
+
+                ViewBag.PlacesView = placesView;
+
+            }
+
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult Restaurants()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult Museums()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult Cafes()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult MovieTheaters()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult ShoppingMalls()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult Bars()
         {
             return View();
         }
 
-        [Authorize(Roles = "User,Administrator")]
+
         public ActionResult Parks()
         {
             return View();

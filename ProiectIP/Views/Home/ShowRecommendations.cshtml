@@ -1,4 +1,15 @@
-﻿@section content {
-    <h2>ShowRecommendations</h2>
+﻿@using ProiectIP.Models
+@section content {
+    <div style="display:block;margin:auto;width:50%">
+        <h2>ShowRecommendations</h2>
 
+        <ul>
+            @foreach (Place place in ViewBag.PlacesView)
+            {
+                <li>
+                    <h4>@place.PlaceId</h4>
+                </li>
+            }
+        </ul>
+    </div>
 }

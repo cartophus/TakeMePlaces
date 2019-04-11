@@ -32,10 +32,14 @@ namespace ProiectIP
                 roleManager.Create(role);
                 // se adauga utilizatorul administrator
                 var user = new ApplicationUser();
-                user.UserName = "vled.nastasa@gmail.com";
-                user.Email = "vled.nastasa@gmail.com";
+                user.UserName = "admin@gmail.com";
+                user.Email = "admin@gmail.com";
+                user.Age = 21;
+                user.Sex = "M";
+                user.Occupation = "profesor";
+                user.Zipcode = 050788;
                 
-                var adminCreated = UserManager.Create(user, "Katonshido98");
+                var adminCreated = UserManager.Create(user, "Admin1!");
                 if (adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "Administrator");

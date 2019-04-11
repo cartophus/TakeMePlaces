@@ -18,5 +18,8 @@ namespace ProiectIP.Models
 
         public float Rating { get; set; }
         public int UnixTimestamp { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
+        public virtual Place Place { get; set; }
     }
 }
