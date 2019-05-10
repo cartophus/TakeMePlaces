@@ -1,35 +1,50 @@
 ﻿@using ProiectIP.Models
 @section content {
-    <div style="display:block;margin:auto;width:50%">
-        <h2>ShowRecommendations</h2>
+    <div style="display:block;margin:auto;width:50%;">
+        <br />
+        <h1>Your top 5 recommendations:</h1>
+        <br />
+        <div id="map" style="display:none;margin"></div>
+        <ol class="Parent" style="display:block;margin:auto;width:55%;font-size:25px"></ol>
+        <script>
 
-        <ul>
-            @foreach (Place place in ViewBag.PlacesView)
-            {
-                <li>
-                    <h4>@place.PlaceId</h4>
-                    <div id="@place.PlaceId"></div>
-                    <script>getDetails('@place.PlaceId');</script>
-                </li>
-            }
-        </ul>
+                function getPlaceDetails(placeId) {
+                    console.log(placeId);
+                    var request = {
+                        placeId: placeId,
+                        fields: ['name', 'formatted_address', 'geometry', 'photo']
+                    };
+
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: { lat: -33.866, lng: 151.196 },
+                        zoom: 15
+                    });
+                    var service = new google.maps.places.PlacesService(map);
+
+                    service.getDetails(request, function (place, status) {
+                        if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+                            var photos = place.photos;
+
+                            var url = photos[0].getUrl({ maxWidth: 240, maxHeight: 240 })
+
+                            $('.Parent').append(' \
+                                   <li style="margin-bottom:10px"> \
+                                   <img style=""src="' + url + '"><img>\
+                                   <p style=""> ' + place.name + '</p > <p>' + place.formatted_address + '</p>\
+                                   </li > \
+                                ');
+                        }
+                    });
+                }
+
+                 @foreach (Place place in ViewBag.PlacesView)
+                 {
+                     @:getPlaceDetails('@place.PlaceId');
+                 }
+
+        </script>
+
+        <br />
     </div>
-
-    <script>
-        function getDetails(placeId) {
-            var request = {
-                placeId: placeId,
-                fields: ['name', 'formatted_address', 'geometry']
-            };
-
-            service.getDetails(request, function (place, status) {
-                //if (status === google.maps.places.PlacesServiceStatus.OK) {
-
-                    document.getElementById(placeId).innerHTML = "<br /><p>" + place.name + "</p><br /><p> + " + place.formatted_address + "</p><br /><p>" + place.geometry + "</p><br />";
-           
-                //}
-            }
-        }
-
-    </script>
 }

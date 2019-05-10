@@ -170,7 +170,6 @@ function display(category) {
     })
 }
 
-///STORE PLACE ID FOR AI ----------------------------------- TO DO
 function callback(results, status) {
     //if (status == google.maps.places.PlacesService.OK) {
     for (var i = 0; i < results.length; i++) {

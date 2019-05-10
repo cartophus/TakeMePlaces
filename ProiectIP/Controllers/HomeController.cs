@@ -24,7 +24,15 @@ namespace ProiectIP.Controllers
         }
     }
 
+    public class PlaceJson
+    {
+        public String placeId;
 
+        public PlaceJson(String placeId)
+        {
+            this.placeId = placeId;
+        }
+    }
 
     public class HomeController : Controller
     {
@@ -44,6 +52,19 @@ namespace ProiectIP.Controllers
             return View();
         }
 
+       public JsonResult GetPlaceDetails()
+        {
+            var places = (from place in db.Places select place).ToList();
+
+            List<PlaceJson> placeJson = new List<PlaceJson>();
+
+            foreach (Place place in places)
+            {
+                placeJson.Add(new PlaceJson(place.PlaceId));
+            }
+
+            return Json(placeJson, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Rate(String category, String id)
         {
@@ -166,22 +187,28 @@ namespace ProiectIP.Controllers
             using (System.IO.StreamWriter file =
                             new System.IO.StreamWriter(@"C:\Users\vladi\Desktop\work\An3\TakeMePlaces\TakeMePlaces\ProiectIP\AI\conka.txt", true))
             {
-                //file.WriteLine("Errors:");
-                //file.WriteLine(errors);
-                //file.WriteLine();
-                //file.WriteLine("Results:");
-                //file.WriteLine(results);
+                file.WriteLine("Errors:");
+                file.WriteLine(errors);
+                file.WriteLine();
+                file.WriteLine("Results:");
+                file.WriteLine(results);
+
+                //String pattern = @"\s-\s?[+*]?\s?-\s";
 
                 string[] userRec = results.Split(new char[2] { ']', '[' });
-
+                                    
                 string[] userRecPerPlace = userRec[userPos].Split(new char[2] { '\n', ' ' });
                 
-                double[] recPerPlace = new double[placeSize];
+                double[] recPerPlace = new double[placeSize+10];
                 int i = 0;
                 foreach (string rec in userRecPerPlace)
                 {
-                    Debug.WriteLine(rec);
-                    recPerPlace[i] = double.Parse(rec.Trim());
+                    file.WriteLine(rec);
+                    double number;
+                    if (Double.TryParse(rec.Trim(), out number))
+                        recPerPlace[i] = number;
+                    else recPerPlace[i] = 0;
+
                     i++;
                 }
 

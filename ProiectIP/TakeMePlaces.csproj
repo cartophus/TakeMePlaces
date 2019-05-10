@@ -205,6 +205,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AI\conka.txt" />
     <Content Include="AI\ScriptPython2.py" />
     <Content Include="AI\u.user" />
     <Content Include="AI\user.user" />
